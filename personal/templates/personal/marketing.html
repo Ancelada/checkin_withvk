@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/marketing.css">
+{% endblock %}
+
+{% block activeurl %}
+  <ul class="nav navbar-nav">
+      <li><a href="{% url 'personal:statistic' %}">Статистика</a></li>
+      <li class="active"><a href="{% url 'personal:marketing' %}">Маркетинг</a></li>
+      <li><a href="{% url 'personal:edit' %}">Точки доступа</a></li>
+      <li><a href="{% url 'personal:settings' %}">Настройки</a></li>
+  </ul>
+{% endblock %}
+
+{% block marketing %}
+<div class="h"></div>
+<input type="hidden" id="user_id" value="{{ request.user.id }}">
+<div class="fail"></div>
+<section class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>
+                Маркетинг
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="features">Здесь вы можете сделать рассылку всем вашим клиентам, которые пользовались вашей точкой "Wifi2Work".</p>
+            {% if not sms_status %}
+                <p>У вас не подключена возможность рассылки смс. Зайдите в <a href="{% url 'personal:settings' %}">настройки</a></p>
+            {% endif %}
+            {% if not mail_status %}
+                <p>У вас не подключена возможность рассылки по email. Зайдите в <a href="{% url 'personal:settings' %}">настройки</a></p>
+            {% endif %}
+        </div>
+    </div>
+    <ul class="nav nav-tabs change_textarea">
+        {% if mail_status %}
+            <li role="presentation" class="active"><a href="javascript:">Email</a></li>
+        {% endif %}
+        {% if sms_status  %}
+            <li {% if not mail_status %} class="active" {% endif %} role="presentation"><a href="javascript:">SMS</a></li>
+        {% endif %}
+    </ul>
+        <div {% if not mail_status %} style="display: block;" {% endif %} class="row sms_textarea">
+            <div class="col-md-12">
+                Текст
+            </div>
+            <div class="col-md-12">
+                <textarea id="message_user_sms" class="col-md-12 form-control"></textarea>
+            </div>
+        </div>
+        {% if mail_status %}
+        <div class="row textarea mail_textarea">
+
+            <div class="col-md-12">Заголовок</div>
+            <div class="col-md-4">
+                <input type="text" id="title_message" class="form-control">
+            </div>
+            <div class="col-md-12">
+                Текст
+            </div>
+            <div class="col-md-12">
+                <textarea id="message_user" class="col-md-12 form-control" maxlength="270"></textarea>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row send">
+
+            <div class="col-md-12">
+                <button class="btn btn-success send_message">Отправить</button>
+            </div>
+
+        </div>
+
+    </section>
+    <section class="container users">
+        <div {% if not main_status %} style="display: none;" {% endif %}class="row check_users_all">
+            <div class="col-md-1">
+                <label class="checkbox-inline"><input type="checkbox">Всем</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 tables">
+                <table id="clone" class="table table-hover">
+                    <thead>
+                        <th>Имя</th>
+                        <th>Возраст</th>
+                        <th>Пол</th>
+                        <th>E-mail</th>
+                        <th>Телефон</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block extra_js %}
+<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
+<script src="{{ STATIC_URL }}ckeditor/maxlength/plugin.js"></script>
+<script src="{{ STATIC_URL }}js/marketing.js"></script>
+{% endblock %}

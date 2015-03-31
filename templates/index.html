@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Wifi2Work</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ STATIC_URL }}style/style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <ul class="sorry">
+        Для выхода в интернет вам необходимо сделать следующее:
+        <li>1)Нажать кнопку "Отмена"<br><img src="{{ STATIC_URL }}img/IMG_1.png" alt=""></li>
+        <li>2)Выбрать в меню "Использовать без Интернета"<br><img src="{{ STATIC_URL }}img/IMG_2.png" alt=""></li>
+        <li>3)Открыть браузер Safari <br><img src="{{ STATIC_URL }}img/IMG_3.png" alt=""></li>
+    </ul>
+    <div class="error">
+        Вы должны оставить пост
+    </div>
+    <section class="logo">
+        <img src="{{ STATIC_URL }}img/logo.jpg" alt="">
+    </section>
+    <section class="icons">
+    <!-- <a href="javascript:" onclick="loginFB()" class="fb">
+        <img src="{{ STATIC_URL }}img/fb.png">
+    </a> -->
+    <a id="tweet" target="_blanck" href="/wifi/free/twitter" class="tw">
+        <img src="{{ STATIC_URL }}img/tw.png">
+    </a>
+    <a href="javascript:" class="in">
+        <img src="{{ STATIC_URL }}img/inst.png">
+    </a>
+    <a href="javascript:" class="ph">
+        <img src="{{ STATIC_URL }}img/phone.png">
+    </a>
+    <a href="javascript:" onclick="loginOpenAPI()" class="vk">
+        <img src="{{ STATIC_URL }}img/vk.png">
+    </a>
+    </section>
+    <input type="hidden" id="identity" value="{{ identity }}">
+    <input type="hidden" value="{{ csrf_token }}" id="csrf">
+    <section class="ph_number">
+        <input type="text" placeholder="+79053323222" id="number">
+        <a href="javascript:" class="send">Отправить</a>
+    </section>
+    <section class="ph_password">
+        <input type="text" id="password">
+        <a href="javascript:" class="login">Войти</a>
+    </section>
+    <section class="banner">
+        <img src="{{ banner }}" alt="">
+    </section>
+    <div class="public">
+        <div class="public_text">
+            Опубликовать запись в Вконтакте для доступа в интернет?
+        </div>
+        <div class="public_buttons">
+            <a href="javascript:" class="succes">Опубликовать</a>
+            <a href="javascript:" class="close">Отмена</a>
+        </div>
+    </div>
+    <div class="load">
+        <div class="load_wait">
+           Пожалуйста подождите <br>
+            <img src="{{ STATIC_URL }}img/load.gif" alt="">
+        </div>
+    </div>
+    <input type="hidden" value="{{ data }}" id="data">
+    <input type="hidden" id="link" value="{{ link }}">
+    <div id="vk_api_transport">
+    </div>
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/script.js"></script>
+    <script src="{{ STATIC_URL }}js/vk/openapi_code.js"></script>
+    <script src="{{ STATIC_URL }}js/in/in.js"></script>
+    <script src="{{ STATIC_URL }}js/maskinput/src/jquery.mask.js"></script>
+    <div id="fb-root"></div>
+    <script src="{{ STATIC_URL }}js/fb/fb.js"></script>
+    <input id="link" type="hidden" value={{src}}>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter{{ id }} = new Ya.Metrika({id:{{ id }},
+                        clickmap:true});
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="//mc.yandex.ru/watch/28631331" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+</html>

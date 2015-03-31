@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/settings.css">
+{% endblock %}
+
+{% block activeurl %}
+  <ul class="nav navbar-nav">
+      <li><a href="{% url 'personal:statistic' %}">Статистика</a></li>
+      <li><a href="{% url 'personal:marketing' %}">Маркетинг</a></li>
+      <li><a href="{% url 'personal:edit' %}">Точки доступа</a></li>
+      <li class="active"><a href="{% url 'personal:settings' %}">Настройки</a></li>
+  </ul>
+{% endblock %}
+
+{% block edit %}
+<div class="h"></div>
+    <section class="container">
+       <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a href="#">Почта для рассылки</a></li>
+          <li role="presentation"><a href="#">Личные данные</a></li>
+          <li role="presentation"><a href="#">СМС рассылка</a></li>
+        </ul>
+            <form class="checkmail" action="{% url 'personal:create_mailbox' %}" method="post">{% csrf_token %}
+                Для рассылки email писем мы используем сервис <a target="_blank" href="http://www.mailgun.com/">MailGun</a>. <br>
+                Вам потребуется: <br>
+                <ul>
+                    <li>Зарегистрироваться на <a target="_blank" href="http://www.mailgun.com/">данном сервисе</a></li>
+                    <li>Ввести данные после регистрации в личные настройки ниже</li>
+                </ul>
+                <div class="row">
+                    <div class="col-md-2">Hostname</div>
+                    <div class="col-md-3"><input type="text" required name="hostname" class="form-control" value="{{ mail.host }}" placeholder="smtp.mailgun.org"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">API Key</div>
+                    <div class="col-md-3"><input type="text" required name="api" class="form-control" value="{{ mail.key }}"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">Domain</div>
+                    <div class="col-md-3"><input type="text" required name="domain" class="form-control" value="{{ mail.domain }}"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+       <div class="col-md-12">
+           <form class="edit" action="{% url 'personal:edit_customer_settings' %}" method="post">{% csrf_token %}
+                <div class="row settings_email">
+                    <div class="col-md-12">
+                        <div class="col-md-2">E-mail</div>
+                        <div class="col-md-3"><input name="email" required type="email" value="{{ request.user.email }}" required class="form-control"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-2">Телефон</div>
+                        <div class="col-md-3"><input name="telephone" id="phone_private" required type="text" value="{{ request.user.telephone }}" class="form-control"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-2">Город</div>
+                        <div class="col-md-3"><input name="city" required type="text" value="{{ request.user.city }}" class="form-control"></div>
+                    </div>
+                </div>
+                <div class="row settings_save">
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+           </form>
+       </div>
+       <div class="col-md-12">
+           <form class="smsbox" action="{% url 'personal:create_smsbox' %}" method="post">{% csrf_token %}
+                Для рассылки sms сообщений мы используем сервис <a target="_blank" href="https://www.twilio.com/">Twilio</a>. <br>
+                Вам потребуется: <br>
+                <ul>
+                    <li>Зарегистрироваться на <a target="_blank" href="https://www.twilio.com/">данном сервисе</a></li>
+                    <li>Ввести данные после регистрации в личные настройки ниже</li>
+                </ul>
+                <div class="row">
+                    <div class="col-md-2">Sid</div>
+                    <div class="col-md-3"><input type="text" required name="sid" value="{{ sms.sid }}" class="form-control" value="{{ sms.sid }}"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">Token</div>
+                    <div class="col-md-3"><input type="text" required name="token" value="{{ sms.token }}" class="form-control"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">Number</div>
+                    <div class="col-md-3"><input type="text" id="phone_twilio" required name="number" value="{{ sms.number }}" class="form-control"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+       </div>
+    </section>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ STATIC_URL }}js/settings.js"></script>
+<script src="{{ STATIC_URL }}js/maskinput/src/jquery.mask.js"></script>
+{% endblock %}

@@ -1,0 +1,12 @@
+Django==1.6.5
+South==1.0
+django-tastypie==0.12.1
+requests==2.2.1
+PIL==1.1.7
+birdy==0.2
+twython==3.2.0
+django-suit==0.2.12
+twilio==3.7.2
+facebook==0.4.0
+vk==1.5.3
+lxwt==0.7.5

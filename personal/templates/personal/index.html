@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block activeurl %}
+  <ul class="nav navbar-nav">
+      <li class="active"><a href="{% url 'personal:statistic' %}">Статистика</a></li>
+      <li><a href="{% url 'personal:marketing' %}">Маркетинг</a></li>
+      <li><a href="{% url 'personal:edit' %}">Точки доступа</a></li>
+      <li><a href="{% url 'personal:settings' %}">Настройки</a></li>
+  </ul>
+{% endblock %}
+
+{% block statistics %}
+<div class="h"></div>
+<input type="hidden" value="{{ request.user.id }}" id="user_id">
+<section class="container posts_section">
+    <div class="row">
+        <ul class="nav nav-tabs nav_stat">
+          <li role="presentation" class="active"><a href="javascript:">Посты</a></li>
+          <li role="presentation"><a href="javascript:">Просмотры</a></li>
+          <li role="presentation"><a href="javascript:">Посетители</a></li>
+        </ul>
+    </div>
+    <div class="row date">
+        <div class="row  date_title">
+            <div class="col-md-6">
+                <label for="">Выберите дату</label>
+            </div>
+        </div>
+        <div class="row  date_inputs">
+            <div class="col-md-12">
+                <div class="date_wrap">
+                    <span>от</span> <input type="text" id="date1" class="form-control datepicker">
+                </div>
+                <div class="date_wrap">
+                    <span>до</span><input type="text" id="date2" class="form-control datepicker">
+                </div>
+                <button class="btn btn-primary select_time">Применить</button>
+            </div>
+        </div>
+    </div>
+    <div class="wrap_visit">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Имя</th>
+                        <th>Время поста</th>
+                        <th>День рождения</th>
+                        <th>Пол</th>
+                        <th>E-mail</th>
+                        <th>Телефон</th>
+                        <th>VK</th>
+                        <th>FB</th>
+                        <th>TW</th>
+                        <th>Instagram</th>
+                        <th>Кол-во посещений</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <form action="to_xls" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary xml">Выгрузка в xml</button>
+                </form>
+            </div>
+        </div>
+        <div class="row send_to_vk">
+            <form action="#" class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <textarea name="text" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="file" name="picture" id="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <button class="btn btn-primary" type="submit">Send</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="wrap_posts">
+        <div class="row title">
+            <div class="col-md-6">
+                <h2>Посты</h2>
+            </div>
+        </div>
+        <div class="row posts">
+            <li class="col-md-2  post_element">
+                <div class="col-md-6 post_element_img">
+                    <img src="{{ STATIC_URL }}img/fb.png" alt="">
+                </div>
+                <div class="col-md-6 post_element_text" id="fb">
+                    0
+                </div>
+            </li>
+            <li class="col-md-2 post_element">
+                <div class="col-md-6 post_element_img">
+                    <img src="{{ STATIC_URL }}img/inst.png" alt="">
+                </div>
+                <div class="col-md-6 post_element_text" id="in">
+                    0
+                </div>
+            </li>
+            <li class="col-md-2 post_element">
+                <div class="col-md-6 post_element_img">
+                    <img src="{{ STATIC_URL }}img/vk.png" alt="">
+                </div>
+                <div class="col-md-6 post_element_text" id="vk">
+                    0
+                </div>
+            </li>
+            <li class="col-md-2 post_element">
+                <div class="col-md-6 post_element_img">
+                    <img src="{{ STATIC_URL }}img/tw.png" alt="">
+                </div>
+                <div class="col-md-6 post_element_text"  id="tw">
+                    0
+                </div>
+            </li>
+            <li class="col-md-2 post_element">
+                <div class="col-md-6 post_element_img">
+                    <img src="{{ STATIC_URL }}img/phone.png" alt="">
+                </div>
+                <div class="col-md-6 post_element_text" id="phone">
+                    0
+                </div>
+            </li>
+        </div>
+    </div>
+</section>
+<section class="container highchart">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="graphic"></div>
+        </div>
+    </div>
+</section>
+<div class="wrap_views">
+    <section class="container views">
+        <div class="row">
+            <div class="col-md-6 ">
+                <h2>Просмотры</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2  views_element">
+                <div class="row views_element_count">
+                    0
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container graphics">
+        <div class="row">
+            <div class="col-md-6 ">
+                <h2>Статистика по посетителям</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 graph_element">
+                <div class="row">
+                    Возраст
+                </div>
+                <div class="row" id="age"></div>
+            </div>
+            <div class="col-md-6 graph_element">
+                <div class="row">
+                    Пол
+                </div>
+                <div class="row" id="gender"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 graph_element">
+                <div class="row">
+                    Операционная система
+                </div>
+                <div class="row" id="os"></div>
+            </div>
+            <div class="col-md-6 graph_element">
+                <div class="row">
+                    Устройства
+                </div>
+                <div class="row" id="device"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 graph_element">
+                <div class="row">
+                    Браузер
+                </div>
+                <div class="row" id="browser"></div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script type="text/javascript" src="{{ STATIC_URL }}bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{ STATIC_URL }}bower_components/d3/d3.min.js"></script>
+<script src="{{ STATIC_URL }}bower_components/d3/d3pie.min.js"></script>
+<script src="{{ STATIC_URL }}js/onmain.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+{% endblock %}

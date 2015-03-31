@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/edit.css">
+{% endblock %}
+
+{% block activeurl %}
+  <ul class="nav navbar-nav">
+      <li><a href="{% url 'personal:statistic' %}">Статистика</a></li>
+      <li><a href="{% url 'personal:marketing' %}">Маркетинг</a></li>
+      <li class="active"><a href="{% url 'personal:edit' %}">Точки доступа</a></li>
+      <li><a href="{% url 'personal:settings' %}">Настройки</a></li>
+  </ul>
+{% endblock %}
+
+{% block edit %}
+<div class="h"></div>
+<input type="hidden" value="{{ request.user.username }}" id="user">
+<!-- SUCCESS WIDNOW -->
+<div class="succes_window">
+    Сохранение успешно
+</div>
+<!-- END SUCCESS -->
+<!--Modal window with images for posts-->
+<div id="changeBanner" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Выберите баннер</h4>
+      </div>
+      <div class="modal-body">
+          <ul></ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        <button type="button" id="save_change_banner" class="btn btn-primary">ОК</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end modal-->
+<section class="container">
+    <div class="row">
+        <ul class="nav nav-tabs select_type">
+          <li role="presentation" class="active"><a href="javascript:">Точки</a></li>
+          <li role="presentation"><a href="javascript:">Реклама</a></li>
+          <li role="presentation"><a href="javascript:">Загрузить баннер</a></li>
+        </ul>
+    </div>
+    <div class="row points">
+        <table class="table table-bordered">
+          <thead>
+            <th>Название точки</th>
+            <th>Адрес</th>
+            <th>Баннер</th>
+            <th>Редактировать</th>
+          </thead>
+          <tbody></tbody>
+        </table>
+    </div>
+    <div class="row load_banner">
+       <ul></ul>
+        <form action="/personal/add_banner" method="post" id="form_load_banner" enctype="multipart/form-data">
+         {% csrf_token %}
+            <input type="hidden" name="identity">
+            <div class="row">
+                <div class="col-md-12" id="preview_img"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn btn-default btn-file">
+                         Загрузить файл<input name="banner" required id="upload_new_file" type="file">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><button type="submit" class="btn btn-success">Сохранить</button></div>
+            </div>
+            <div class="row gallery">
+              {% for banner in banners %}
+                <div class="img_gallery">
+                  <img src="{{ banner.banner.url }}" alt="">
+                </div>
+              {% endfor %}
+            </div>
+        </form>
+    </div>
+</section>
+<section class="container edit">
+   <div class="row main">
+      <hr>
+       <h3>Основные настройки</h3>
+        <div class="main_block--first">
+            <div class="row edit_address">
+                <div class="col-md-4">
+                    Адрес: <br>
+                    <input id="address" type="text" required class="form-control"> <b>Формат: Регион, Город, Район, Место</b>
+                </div>
+            </div>
+            <div class="row edit_link">
+                <div class="col-md-4">
+                    Ссылка на ваш сайт: <br>
+                    <input type="text" pattern='^(ftp|http|https):\/\/[^ "]+$' required id="link" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <button class="btn btn-success main_block--first_button">Сохранить</button>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="row title">
+            <div class="col-md-12">
+                Текст:
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-4 title_input">
+                   <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row banner">
+          <div class="col-md-12">
+              Баннер:
+          </div>
+           <div class="col-md-12" id="main_banner--img">
+           </div>
+            <div class="col-md-12">
+                Выберите из существующих
+                <button class="btn btn-primary variaty_banner" data-banner="main" data-toggle="modal">Выбрать</button>
+            </div>
+        </div>
+        <div class="row save main_block--second">
+            <button class="btn btn-success">Сохранить</button>
+        </div>
+        <hr>
+   </div>
+   <input type="hidden" value="{{ request.user }}">
+    <div class="row social">
+       <h3>Настройка соц. сетей</h3>
+        <div class="col-md-12 social_tabs">
+            <ul class="nav nav-pills nav-justified">
+              <li role="presentation" class="active"><a href="javascript:">Вконтакте</a></li>
+              <li role="presentation"><a href="javascript:">Facebook</a></li>
+              <li role="presentation"><a href="javascript:">Instagram</a></li>
+              <li role="presentation"><a href="javascript:">Twitter</a></li>
+            </ul>
+        </div>
+        <div class="col-md-12 social_fileds">
+            <div class="col-md-12">
+                <div class="col-md-12 social_fields_text--text">
+                    Текст для поста
+                </div>
+                <div class="col-md-8 social_fields_text--input">
+                    <input type="text" class="form-control">
+                    <p class="instagram_example">Пример: https://instagram.com/instagramrussia/</p>
+                </div>
+            </div>
+            <div class="col-md-12 social_fileds_banner">
+                <div class="col-md-12">
+                    Баннер:
+                </div>
+                <div class="col-md-12" id="social_post_banner"></div>
+                <div class="col-md-12">
+                    Выберите из существующих <button class="btn btn-primary variaty_banner" data-banner="social" data-toggle="modal">Выбрать</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 save_social_settings">
+            <button class="btn btn-success">Сохранить</button>
+            <hr>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_js%}
+<script src="{{ STATIC_URL }}js/edit.js"></script>
+{% endblock %}

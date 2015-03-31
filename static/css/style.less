@@ -1,0 +1,121 @@
+body {
+    background: #fafafa;
+}
+
+#graphic {
+    margin-top: 20px;
+}
+
+//Variables
+@grey: #c4c4c4;
+//End variables
+
+nav {
+    border-radius: 0 !important;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.picker-switch td span {
+    display: none !important;
+}
+
+.posts_section {
+    img {
+        width: 100%;
+    }
+    .date {
+        margin: 20px 0 20px 0;
+        input {
+            position: relative;
+            max-width: 150px;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        .date_wrap {
+            display: inline-block;
+            vertical-align: top;
+            position: relative;
+            &:first-child {
+                padding-left: 5px;
+                margin-right: 20px;
+            }
+        }
+        button {
+            margin-left: 10px;
+        }
+    }
+    .post_element {
+        height: 53px;
+        line-height: 53px;
+        border-left: 1px solid @grey;
+        list-style: none;
+        &:last-child {
+            border-right: 1px solid @grey;
+        }
+    }
+    .post_element_img {
+        text-align: center;
+    }
+    .post_element_text {
+        text-align: center;
+        font-size: 18px;
+    }
+}
+
+.views {
+    .views_element {
+        border-left: 1px solid @grey;
+        .row {
+            padding: 0 10px;
+            &:first-child {
+                margin-bottom: 10px;
+            }
+        }
+        &:last-child {
+            border-right: 1px solid @grey;
+        }
+    }
+}
+
+.graphics {
+    .graph_element {
+        font-size: 20px;
+    }
+}
+
+.logout {
+    position: absolute;
+    top: 6px;
+    right: 50px;
+    color: white;
+    font-size: 25px;
+    font-weight: 100;
+    &:hover {
+        text-decoration: none;
+        color: grey;
+    }
+}
+
+#messages {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease-out;
+    z-index: 1;
+    background: rgba(255, 30, 30, 0.9);
+    color: white;
+    font-size: 17px;
+    .alert {
+        padding: 7px;
+        margin-bottom: 0;
+    }
+}
+
+
+.wrap_views {
+    display: none;
+}
