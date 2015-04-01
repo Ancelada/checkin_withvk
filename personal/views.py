@@ -683,10 +683,16 @@ def vksendresult(request):
       stringlink = int(stringlink[nlink+2:])
       args['stringlink'] = stringlink
       if request.POST['attachement_links']:
+        try:
           vkapi.messages.send(user_id=args['stringlink'], message=args['text'], attachment=args['attachment'],
           version='5.29')
+        except:
+          pass
       else:
+        try:
           vkapi.messages.send(user_id=args['stringlink'], message=args['text'], version='5.29')
+        except:
+          pass
     return redirect(reverse('personal:statistic'))
   except:
-    return HttpResponse('пустое поле "текст" или "url после авторизации"')
+    return HttpResponse('пустое поле "текст" или некорректное/пустое поле "url после авторизации"')
