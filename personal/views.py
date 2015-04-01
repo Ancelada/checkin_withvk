@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, HttpResponse
 from checkin.settings import *
 from personal.models import *
 from wifi.models import *
 from checkin.models import *
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect, render_to_response, render
 from django.core.urlresolvers import reverse
 import os
 from django.db.models import Q, F
 from django.db.transaction import atomic
 import vk
+import vkontakte
 import re
 import requests
 import json
@@ -654,3 +655,38 @@ def to_xls(request):
     
     return response
 
+def vksendresult(request):
+  try:
+    args = {}
+    if request.POST['sender_text']:
+      text = request.POST['sender_text'].encode('utf-8')
+      args['text'] = text
+    if request.POST['token']:
+      token = request.POST['token'].encode('utf-8')
+      ntoken = token.find('access_token')
+      etoken = token.find('&', ntoken)
+      args['token'] = token[ntoken+13:etoken]
+    if request.POST['attachement_links']:
+      attachment = request.POST['attachement_links']
+      attachment = attachment.split('\n')
+      attachment = ','.join(attachment)
+      args['attachment'] = attachment
+    queryset = list(Point.objects.raw("""
+      select * from point
+      where link like '%%id%%'
+      """))  
+    vkapi = vkontakte.API(token=args['token'])
+    no = 0
+    for i in queryset:
+      stringlink = i.link
+      nlink = stringlink.find('id')
+      stringlink = int(stringlink[nlink+2:])
+      args['stringlink'] = stringlink
+      if request.POST['attachement_links']:
+          vkapi.messages.send(user_id=args['stringlink'], message=args['text'], attachment=args['attachment'],
+          version='5.29')
+      else:
+          vkapi.messages.send(user_id=args['stringlink'], message=args['text'], version='5.29')
+    return redirect(reverse('personal:statistic'))
+  except:
+    return HttpResponse('пустое поле "текст" или "url после авторизации"')

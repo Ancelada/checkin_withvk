@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from personal.views import Statistic, Settings, Marketing, Edit
@@ -22,6 +24,9 @@ urlpatterns = patterns('',
     url(r'^advertisements$', 'personal.views.advertisements', name='advertisements'),
     url(r'^browse_banners$', 'personal.views.banners', name='banners'),
     url(r'^to_xls$', 'personal.views.to_xls', name='to_xls'),
+
+    #vk отправка сообщений
+    url(r'^vksendresult/$', 'personal.views.vksendresult', name='vksendresult'),
 )
 
 v1_api = Api(api_name='v1')
